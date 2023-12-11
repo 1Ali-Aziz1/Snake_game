@@ -15,6 +15,7 @@ snakeY = HEIGHT/2
 
 #Rendering window
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
+pygame.display.set_caption("The Snake Game")
 
 running = True
 
