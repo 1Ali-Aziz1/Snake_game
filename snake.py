@@ -9,10 +9,12 @@ pygame.init()
 HEIGHT = 600
 WIDTH = 800
 BOXSIZE = 50
-FPS = 60
+FPS = 60/8
 snake_size = 1
 snakeX = WIDTH/2
 snakeY = HEIGHT/2
+snakeDirectionX = 0
+snakeDirectionY = 0
 
 #Rendering window
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -38,6 +40,15 @@ while running:
     screen.fill((0, 0, 0))
     drawLines()
     rect()
+    
+    snakeX += snakeDirectionX
+    snakeY += snakeDirectionY
+    
+    if(snakeY == 0 or snakeY == HEIGHT - BOXSIZE):
+        snakeDirectionY = 0
+    if(snakeX == 0 or snakeX == WIDTH - BOXSIZE):
+        snakeDirectionX = 0
+    
     # for loop through the event queue   
     for event in pygame.event.get(): 
         # Check for QUIT event       
@@ -45,13 +56,17 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                snakeY = snakeY - 5
+                snakeDirectionY = -BOXSIZE
+                snakeDirectionX = 0
             if event.key == pygame.K_DOWN:
-                snakeY = snakeY + 5
+                snakeDirectionY = BOXSIZE
+                snakeDirectionX = 0
             if event.key == pygame.K_LEFT:
-                snakeX = snakeX - 5
+                snakeDirectionX = -BOXSIZE
+                snakeDirectionY = 0
             if event.key == pygame.K_RIGHT:
-                snakeX = snakeX + 5
+                snakeDirectionX = BOXSIZE
+                snakeDirectionY = 0 
 
     pygame.display.update()
     pygame.time.Clock().tick(FPS)
