@@ -1,5 +1,6 @@
 #Importing modules
 import pygame
+import random
 from pygame.locals import *
 
 #Initializing pygame
@@ -9,13 +10,15 @@ pygame.init()
 HEIGHT = 600
 WIDTH = 800
 BOXSIZE = 50
-FPS = 60/8
-snake_size = 0
+FPS = 60
+snake_size = 1
 snakeX = WIDTH/2
 snakeY = HEIGHT/2
-snakeLst = []
+snakeList = []
 snakeDirectionX = 0
 snakeDirectionY = 0
+foodX = 0
+foodY = 0
 
 #Rendering window
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -36,18 +39,32 @@ def rect():
     # while i != snake_size:
     #     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(snakeX + i*BOXSIZE, snakeY, BOXSIZE, BOXSIZE))
     #     i = i+1
-    for x,y in snakeLst:
+    for x,y in snakeList:
         pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(x, y, BOXSIZE, BOXSIZE))
+        
+def changeFoodLocation():
+    x = random.randint(BOXSIZE, WIDTH - BOXSIZE)
+    y = random.randint(BOXSIZE, HEIGHT-BOXSIZE)
+    return [x, y]
+        
+def plotFood():
+    pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(foodX, foodY, BOXSIZE, BOXSIZE))
+    
+foodLocation = changeFoodLocation()
+foodX = foodLocation[0]
+foodY = foodLocation[1]
      
 
 while running:
     screen.fill((0, 0, 0))
-    drawLines()
+    # drawLines()
+    plotFood()
     rect()
     
     snakeX += snakeDirectionX
     snakeY += snakeDirectionY
     
+
     if(snakeX == 0):
         snakeDirectionX = 0
     if(snakeY == 0):
@@ -70,10 +87,18 @@ while running:
     head = []
     head.append(snakeX)
     head.append(snakeY)
-    snakeLst.append(head)
+    snakeList.append(head)
     
-    if len(snakeLst)>snake_size:
-        del snakeLst[0]
+    
+    if(snakeX - foodX == 0):
+        if(snakeY - foodY == 0):
+            snake_size += 1
+            foodlocation = changeFoodLocation()
+            foodX = foodlocation[0]
+            foodY = foodlocation[1]
+    
+    if len(snakeList)>snake_size:
+        del snakeList[0]
     
     # for loop through the event queue   
     for event in pygame.event.get(): 
@@ -82,19 +107,29 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                snakeDirectionY = -BOXSIZE
+                snakeDirectionY = -BOXSIZE/BOXSIZE
                 snakeDirectionX = 0
             if event.key == pygame.K_DOWN:
-                snakeDirectionY = BOXSIZE
+                snakeDirectionY = BOXSIZE/BOXSIZE
                 snakeDirectionX = 0
             if event.key == pygame.K_LEFT:
-                snakeDirectionX = -BOXSIZE
+                snakeDirectionX = -BOXSIZE/BOXSIZE
                 snakeDirectionY = 0
             if event.key == pygame.K_RIGHT:
-                snakeDirectionX = BOXSIZE
+                snakeDirectionX = BOXSIZE/BOXSIZE
                 snakeDirectionY = 0 
             if event.key == pygame.K_w:
                 snake_size += 1
+            if event.key == pygame.K_SPACE:
+                snakeDirectionX = 0
+                snakeDirectionY = 0
+            if event.key == pygame.K_s:
+                print("snake position:", snakeX, snakeY)
+                print("food position:", foodX, foodY)
+                print("Difference of X",snakeX - foodX)
+                print("Difference of Y",snakeY - foodY)
+                print("_____________________________________________________________________")
+                
 
     pygame.display.update()
     pygame.time.Clock().tick(FPS)
