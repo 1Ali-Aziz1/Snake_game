@@ -10,7 +10,7 @@ pygame.init()
 HEIGHT = 600
 WIDTH = 800
 BOXSIZE = 50
-FPS = 60
+FPS = 60/8
 snake_size = 1
 snakeX = WIDTH/2
 snakeY = HEIGHT/2
@@ -43,9 +43,9 @@ def rect():
         pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(x, y, BOXSIZE, BOXSIZE))
         
 def changeFoodLocation():
-    x = random.randint(BOXSIZE, WIDTH - BOXSIZE)
-    y = random.randint(BOXSIZE, HEIGHT-BOXSIZE)
-    return [x, y]
+    foodX = random.randint(BOXSIZE, WIDTH - BOXSIZE)
+    foodY = random.randint(BOXSIZE, HEIGHT-BOXSIZE)
+    return [foodX, foodY]
         
 def plotFood():
     pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(foodX, foodY, BOXSIZE, BOXSIZE))
@@ -90,13 +90,12 @@ while running:
     snakeList.append(head)
     
     
-    if(snakeX - foodX == 0):
-        if(snakeY - foodY == 0):
+    if(abs(snakeX - foodX)<50):
+        if(abs(snakeY - foodY)<50):
             snake_size += 1
             foodlocation = changeFoodLocation()
             foodX = foodlocation[0]
             foodY = foodlocation[1]
-    
     if len(snakeList)>snake_size:
         del snakeList[0]
     
@@ -107,28 +106,19 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                snakeDirectionY = -BOXSIZE/BOXSIZE
+                snakeDirectionY = -BOXSIZE
                 snakeDirectionX = 0
             if event.key == pygame.K_DOWN:
-                snakeDirectionY = BOXSIZE/BOXSIZE
+                snakeDirectionY = BOXSIZE
                 snakeDirectionX = 0
             if event.key == pygame.K_LEFT:
-                snakeDirectionX = -BOXSIZE/BOXSIZE
+                snakeDirectionX = -BOXSIZE
                 snakeDirectionY = 0
             if event.key == pygame.K_RIGHT:
-                snakeDirectionX = BOXSIZE/BOXSIZE
+                snakeDirectionX = BOXSIZE
                 snakeDirectionY = 0 
             if event.key == pygame.K_w:
                 snake_size += 1
-            if event.key == pygame.K_SPACE:
-                snakeDirectionX = 0
-                snakeDirectionY = 0
-            if event.key == pygame.K_s:
-                print("snake position:", snakeX, snakeY)
-                print("food position:", foodX, foodY)
-                print("Difference of X",snakeX - foodX)
-                print("Difference of Y",snakeY - foodY)
-                print("_____________________________________________________________________")
                 
 
     pygame.display.update()
