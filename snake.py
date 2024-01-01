@@ -10,15 +10,27 @@ pygame.init()
 HEIGHT = 600
 WIDTH = 800
 BOXSIZE = 50
-FPS = 60/8
-snake_size = 1
+FPS = 60/10
+snake_size = 0
 snakeX = WIDTH/2
 snakeY = HEIGHT/2
 snakeList = []
 snakeDirectionX = 0
 snakeDirectionY = 0
-foodX = 0
+foodX = []
 foodY = 0
+line = False
+temp = 0
+
+for i in range(1, 17):
+    foodX.append(i*BOXSIZE)
+
+# foodX.append(50)
+# foodX.append(100)
+
+print(foodX)
+
+ 
 
 #Rendering window
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -27,11 +39,12 @@ pygame.display.set_caption("The Snake Game")
 running = True
 
 def drawLines():
-    i = BOXSIZE
-    while i < WIDTH:
-        pygame.draw.line(screen, (255, 255, 255), (i, 0), (i, HEIGHT), 2)
-        pygame.draw.line(screen, (255, 255, 255), (0, i), (WIDTH, i), 2)
-        i = i +BOXSIZE
+    if line:
+        i = BOXSIZE
+        while i < WIDTH:
+            pygame.draw.line(screen, (255, 255, 255), (i, 0), (i, HEIGHT), 2)
+            pygame.draw.line(screen, (255, 255, 255), (0, i), (WIDTH, i), 2)
+            i = i +BOXSIZE
 
 
 def rect():
@@ -43,9 +56,9 @@ def rect():
         pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(x, y, BOXSIZE, BOXSIZE))
         
 def changeFoodLocation():
-    foodX = random.randint(BOXSIZE, WIDTH - BOXSIZE)
-    foodY = random.randint(BOXSIZE, HEIGHT-BOXSIZE)
-    return [foodX, foodY]
+    foodX = random.randint(BOXSIZE, WIDTH - BOXSIZE)/25
+    foodY = random.randint(BOXSIZE, HEIGHT-BOXSIZE)/25
+    return [foodX*25, foodY*25]
         
 def plotFood():
     pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(foodX, foodY, BOXSIZE, BOXSIZE))
@@ -55,9 +68,11 @@ foodX = foodLocation[0]
 foodY = foodLocation[1]
      
 
+
 while running:
+    pygame.display.flip()
     screen.fill((0, 0, 0))
-    # drawLines()
+    drawLines()
     plotFood()
     rect()
     
@@ -90,6 +105,9 @@ while running:
     snakeList.append(head)
     
     
+    
+    if(snake_size == 0):
+        snake_size = snake_size + 1
     if(abs(snakeX - foodX)<50):
         if(abs(snakeY - foodY)<50):
             snake_size += 1
@@ -98,6 +116,17 @@ while running:
             foodY = foodlocation[1]
     if len(snakeList)>snake_size:
         del snakeList[0]
+    if(snakeList[0][0]==0)or(snakeList[0][1]==0):
+        num = 1
+        for x in range(len(snakeList)):
+            snake_size = snake_size - 1
+            del snakeList[snake_size-1]
+            print("lalalala")
+    # for x,y in snakeList:
+    #     if(abs(snakeList[0][1] - x)<50):
+    #         if abs(snakeList[0][0] - y)<50:
+    #             temp = temp + 1
+    #             print("Ohhh lala", temp)
     
     # for loop through the event queue   
     for event in pygame.event.get(): 
@@ -119,6 +148,13 @@ while running:
                 snakeDirectionY = 0 
             if event.key == pygame.K_w:
                 snake_size += 1
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+            if event.key == pygame.K_c:
+                if line == False:
+                    line = True
+                elif line:
+                    line = False
                 
 
     pygame.display.update()
