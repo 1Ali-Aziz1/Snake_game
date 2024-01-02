@@ -80,10 +80,12 @@ while running:
     snakeY += snakeDirectionY
     
 
-    if(snakeX == 0):
-        snakeDirectionX = 0
-    if(snakeY == 0):
-        snakeDirectionY = 0
+    for x in snakeList:
+        if(x == 0):
+            snakeDirectionX = 0
+    for y in snakeList:
+        if(y == 0):
+            snakeDirectionY = 0
     if(snakeX < 0):
         snakeX = 0
         
@@ -108,6 +110,8 @@ while running:
     
     if(snake_size == 0):
         snake_size = snake_size + 1
+        snakeX = WIDTH/2
+        snakeY = HEIGHT/2
     if(abs(snakeX - foodX)<50):
         if(abs(snakeY - foodY)<50):
             snake_size += 1
@@ -116,7 +120,7 @@ while running:
             foodY = foodlocation[1]
     if len(snakeList)>snake_size:
         del snakeList[0]
-    if(snakeList[0][0]==0)or(snakeList[0][1]==0):
+    if(snakeList[0][0]==0)or(snakeList[0][1]==WIDTH)or(snakeList[0][0]==HEIGHT)or(snakeList[0][1]==0):
         num = 1
         for x in range(len(snakeList)):
             snake_size = snake_size - 1
@@ -135,19 +139,26 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                snakeDirectionY = -BOXSIZE
-                snakeDirectionX = 0
+                if(snakeDirectionY != BOXSIZE/7):
+                    snakeDirectionY = -BOXSIZE/7
+                    snakeDirectionX = 0
             if event.key == pygame.K_DOWN:
-                snakeDirectionY = BOXSIZE
-                snakeDirectionX = 0
+                if(snakeDirectionY != -BOXSIZE/7):
+                    snakeDirectionY = BOXSIZE/7
+                    snakeDirectionX = 0
             if event.key == pygame.K_LEFT:
-                snakeDirectionX = -BOXSIZE
-                snakeDirectionY = 0
+                if(snakeDirectionX != BOXSIZE/7):
+                    snakeDirectionX = -BOXSIZE/7
+                    snakeDirectionY = 0
             if event.key == pygame.K_RIGHT:
-                snakeDirectionX = BOXSIZE
-                snakeDirectionY = 0 
+                if(snakeDirectionX != -BOXSIZE/7):
+                    snakeDirectionX = BOXSIZE/7
+                    snakeDirectionY = 0 
             if event.key == pygame.K_w:
                 snake_size += 1
+            if event.key == pygame.K_SPACE:
+                snakeDirectionX = 0
+                snakeDirectionY = 0
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
             if event.key == pygame.K_c:
