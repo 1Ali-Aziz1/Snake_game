@@ -4,13 +4,13 @@ import random
 from pygame.locals import *
 
 #Initializing pygame
-pygame.init()
+# pygame.init()
 
 #Global variables
 HEIGHT = 600
 WIDTH = 800
 BOXSIZE = 50
-FPS = 60/10
+FPS = 60/1
 snake_size = 0
 snakeX = WIDTH/2
 snakeY = HEIGHT/2
@@ -22,8 +22,8 @@ foodY = 0
 line = False
 temp = 0
 
-for i in range(1, 17):
-    foodX.append(i*BOXSIZE)
+# for i in range(1, 17):
+#     foodX.append(i*BOXSIZE)
 
 # foodX.append(50)
 # foodX.append(100)
@@ -120,7 +120,8 @@ while running:
             foodY = foodlocation[1]
     if len(snakeList)>snake_size:
         del snakeList[0]
-    if(snakeList[0][0]==0)or(snakeList[0][1]==WIDTH)or(snakeList[0][0]==HEIGHT)or(snakeList[0][1]==0):
+    #Collision of snake to walls
+    if(snakeList[0][0]==0)or(snakeList[0][0]==WIDTH-BOXSIZE)or(snakeList[0][1]>HEIGHT)or(snakeList[0][1]==0):
         num = 1
         for x in range(len(snakeList)):
             snake_size = snake_size - 1
