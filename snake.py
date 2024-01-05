@@ -52,8 +52,11 @@ def rect():
     #     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(snakeX + i*BOXSIZE, snakeY, BOXSIZE, BOXSIZE))
     #     i = i+1
     i = 0
-    i = 1
+    # i = 1
     for x,y in snakeList:
+        j = i
+        if i >=250:
+          i=0
         pygame.draw.rect(screen, (i, 255, i), pygame.Rect(x, y, BOXSIZE, BOXSIZE))
         i += 5
         
