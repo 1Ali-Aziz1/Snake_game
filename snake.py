@@ -7,13 +7,13 @@ from pygame.locals import *
 # pygame.init()
 
 #Global variables
-HEIGHT = 600
-WIDTH = 800
+screenHeight = 600
+screenWidth = 800
 BOXSIZE = 50
-FPS = 60/1
+FPS = 60/10
 snake_size = 0
-snakeX = WIDTH/2
-snakeY = HEIGHT/2
+snakeX = screenWidth/2
+snakeY = screenHeight/2
 snakeList = []
 snakeDirectionX = 0
 snakeDirectionY = 0
@@ -33,17 +33,16 @@ print(foodX)
  
 
 #Rendering window
-screen = pygame.display.set_mode((WIDTH,HEIGHT))
-pygame.display.set_caption("The Snake Game")
+pygame.display.set_caption("The World's Best Snake Game")
 
 running = True
 
 def drawLines():
     if line:
         i = BOXSIZE
-        while i < WIDTH:
-            pygame.draw.line(screen, (255, 255, 255), (i, 0), (i, HEIGHT), 2)
-            pygame.draw.line(screen, (255, 255, 255), (0, i), (WIDTH, i), 2)
+        while i < screenWidth:
+            pygame.draw.line(screen, (255, 255, 255), (i, 0), (i, screenHeight), 2)
+            pygame.draw.line(screen, (255, 255, 255), (0, i), (screenWidth, i), 2)
             i = i +BOXSIZE
 
 
@@ -52,12 +51,18 @@ def rect():
     # while i != snake_size:
     #     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(snakeX + i*BOXSIZE, snakeY, BOXSIZE, BOXSIZE))
     #     i = i+1
+    i = 0
+    # i = 1
     for x,y in snakeList:
-        pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(x, y, BOXSIZE, BOXSIZE))
+        j = i
+        if i >=250:
+          i=0
+        pygame.draw.rect(screen, (i, 255, i), pygame.Rect(x, y, BOXSIZE, BOXSIZE))
+        i += 5
         
 def changeFoodLocation():
-    foodX = random.randint(BOXSIZE, WIDTH - BOXSIZE)/25
-    foodY = random.randint(BOXSIZE, HEIGHT-BOXSIZE)/25
+    foodX = random.randint(BOXSIZE, screenWidth - BOXSIZE)/25
+    foodY = random.randint(BOXSIZE, screenHeight-BOXSIZE)/25
     return [foodX*25, foodY*25]
         
 def plotFood():
@@ -70,7 +75,8 @@ foodY = foodLocation[1]
 
 
 while running:
-    pygame.display.flip()
+    screen = pygame.display.set_mode((screenWidth,screenHeight))
+    # pygame.display.flip()
     screen.fill((0, 0, 0))
     drawLines()
     plotFood()
@@ -89,29 +95,27 @@ while running:
     if(snakeX < 0):
         snakeX = 0
         
-    if(snakeX == WIDTH - BOXSIZE or snakeX > WIDTH - BOXSIZE):
-        snakeX = WIDTH - BOXSIZE
-    if(snakeY < 0):
-        snakeY = 0
-    if(snakeY == HEIGHT - BOXSIZE or snakeY > WIDTH - BOXSIZE):
-        snakeY = HEIGHT - BOXSIZE
+    # if(snakeX == screenWidth - BOXSIZE or snakeX > screenWidth - BOXSIZE):
+    #     snakeX = screenWidth - BOXSIZE
+    # if(snakeY < 0):
+    #     snakeY = 0
+    # if(snakeY == screenHeight - BOXSIZE or snakeY > screenWidth - BOXSIZE):
+    #     snakeY = screenHeight - BOXSIZE
     
-    if(snakeY == 0 or snakeY == HEIGHT - BOXSIZE):
-        snakeDirectionY = 0
-    if(snakeX == 0 or snakeX == WIDTH - BOXSIZE):
-        snakeDirectionX = 0
+    # if(snakeY == 0 or snakeY == screenHeight - BOXSIZE):
+    #     snakeDirectionY = 0
+    # if(snakeX == 0 or snakeX == screenWidth - BOXSIZE):
+    #     snakeDirectionX = 0
         
     head = []
     head.append(snakeX)
     head.append(snakeY)
     snakeList.append(head)
     
-    
-    
     if(snake_size == 0):
         snake_size = snake_size + 1
-        snakeX = WIDTH/2
-        snakeY = HEIGHT/2
+        snakeX = screenWidth/2
+        snakeY = screenHeight/2
     if(abs(snakeX - foodX)<50):
         if(abs(snakeY - foodY)<50):
             snake_size += 1
@@ -121,11 +125,13 @@ while running:
     if len(snakeList)>snake_size:
         del snakeList[0]
     #Collision of snake to walls
-    if(snakeList[0][0]==0)or(snakeList[0][0]==WIDTH-BOXSIZE)or(snakeList[0][1]>HEIGHT)or(snakeList[0][1]==0):
+    if(snakeList[0][0]==0-BOXSIZE)or(snakeList[0][0]==screenWidth)or(snakeList[0][1]==screenHeight)or(snakeList[0][1]==0-BOXSIZE):
         num = 1
         for x in range(len(snakeList)):
             snake_size = snake_size - 1
             del snakeList[snake_size-1]
+            snakeDirectionX = 0
+            snakeDirectionY = 0
             print("lalalala")
     # for x,y in snakeList:
     #     if(abs(snakeList[0][1] - x)<50):
@@ -140,23 +146,25 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                if(snakeDirectionY != BOXSIZE/7):
-                    snakeDirectionY = -BOXSIZE/7
+                if(snakeDirectionY != BOXSIZE):
+                    snakeDirectionY = -BOXSIZE
                     snakeDirectionX = 0
             if event.key == pygame.K_DOWN:
-                if(snakeDirectionY != -BOXSIZE/7):
-                    snakeDirectionY = BOXSIZE/7
+                if(snakeDirectionY != -BOXSIZE):
+                    snakeDirectionY = BOXSIZE
                     snakeDirectionX = 0
             if event.key == pygame.K_LEFT:
-                if(snakeDirectionX != BOXSIZE/7):
-                    snakeDirectionX = -BOXSIZE/7
+                if(snakeDirectionX != BOXSIZE):
+                    snakeDirectionX = -BOXSIZE
                     snakeDirectionY = 0
             if event.key == pygame.K_RIGHT:
-                if(snakeDirectionX != -BOXSIZE/7):
-                    snakeDirectionX = BOXSIZE/7
+                if(snakeDirectionX != -BOXSIZE):
+                    snakeDirectionX = BOXSIZE
                     snakeDirectionY = 0 
             if event.key == pygame.K_w:
                 snake_size += 1
+            if event.key == pygame.K_s:
+                snake_size -= 1
             if event.key == pygame.K_SPACE:
                 snakeDirectionX = 0
                 snakeDirectionY = 0
@@ -167,6 +175,13 @@ while running:
                     line = True
                 elif line:
                     line = False
+            if event.key == pygame.K_m:
+                screenHeight = screenHeight+200
+                screenWidth = screenWidth+200
+            if event.key == pygame.K_n:
+                if screenHeight!= 600 and screenWidth != 800:
+                    screenHeight = screenHeight-200
+                    screenWidth = screenWidth-200
                 
 
     pygame.display.update()
