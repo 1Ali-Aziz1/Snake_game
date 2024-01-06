@@ -125,7 +125,7 @@ while running:
     if len(snakeList)>snake_size:
         del snakeList[0]
     #Collision of snake to walls
-    if(snakeList[0][0]==0-BOXSIZE)or(snakeList[0][0]==screenWidth)or(snakeList[0][1]==screenHeight)or(snakeList[0][1]==0-BOXSIZE):
+    if(snakeList[0][0]==BOXSIZE-BOXSIZE)or(snakeList[0][0]==screenWidth)or(snakeList[0][1]==screenHeight)or(snakeList[0][1]==0-BOXSIZE):
         num = 1
         for x in range(len(snakeList)):
             snake_size = snake_size - 1
