@@ -21,7 +21,7 @@ foodX = []
 foodY = 0
 line = False
 temp = 0
-
+#Iwill beat the shit out of you
 # for i in range(1, 17):
 #     foodX.append(i*BOXSIZE)
 
