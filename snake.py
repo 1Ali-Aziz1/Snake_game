@@ -2,7 +2,7 @@
 import pygame
 import random
 from pygame.locals import *
-
+#I will make a C file too for it
 #Initializing pygame
 # pygame.init()
 
