@@ -21,12 +21,6 @@ foodX = []
 foodY = 0
 line = False
 temp = 0
-#Iwill beat the shit out of you
-# for i in range(1, 17):
-#     foodX.append(i*BOXSIZE)
-
-# foodX.append(50)
-# foodX.append(100)
 
 print(foodX)
 
@@ -47,10 +41,6 @@ def drawLines():
 
 
 def rect():
-    # i = 0
-    # while i != snake_size:
-    #     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(snakeX + i*BOXSIZE, snakeY, BOXSIZE, BOXSIZE))
-    #     i = i+1
     i = 0
     # i = 1
     for x,y in snakeList:
@@ -76,7 +66,6 @@ foodY = foodLocation[1]
 
 while running:
     screen = pygame.display.set_mode((screenWidth,screenHeight))
-    # pygame.display.flip()
     screen.fill((0, 0, 0))
     drawLines()
     plotFood()
@@ -94,18 +83,6 @@ while running:
             snakeDirectionY = 0
     if(snakeX < 0):
         snakeX = 0
-        
-    # if(snakeX == screenWidth - BOXSIZE or snakeX > screenWidth - BOXSIZE):
-    #     snakeX = screenWidth - BOXSIZE
-    # if(snakeY < 0):
-    #     snakeY = 0
-    # if(snakeY == screenHeight - BOXSIZE or snakeY > screenWidth - BOXSIZE):
-    #     snakeY = screenHeight - BOXSIZE
-    
-    # if(snakeY == 0 or snakeY == screenHeight - BOXSIZE):
-    #     snakeDirectionY = 0
-    # if(snakeX == 0 or snakeX == screenWidth - BOXSIZE):
-    #     snakeDirectionX = 0
         
     head = []
     head.append(snakeX)
@@ -133,11 +110,6 @@ while running:
             snakeDirectionX = 0
             snakeDirectionY = 0
             print("lalalala")
-    # for x,y in snakeList:
-    #     if(abs(snakeList[0][1] - x)<50):
-    #         if abs(snakeList[0][0] - y)<50:
-    #             temp = temp + 1
-    #             print("Ohhh lala", temp)
     
     # for loop through the event queue   
     for event in pygame.event.get(): 
